@@ -49,14 +49,16 @@
             android:layout_height="wrap_content"
             android:text="Male"
             android:id="@+id/maleRadioButton"
-            android:checked="true" />
+            android:checked="true"
+            android:drawableRight="@drawable/male" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
             android:id="@+id/femaleRadioButton"
-            android:checked="false" />
+            android:checked="false"
+            android:drawableRight="@drawable/female" />
     </RadioGroup>
 
     <CheckBox
