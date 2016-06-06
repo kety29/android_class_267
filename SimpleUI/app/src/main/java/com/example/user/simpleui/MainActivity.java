@@ -12,9 +12,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     TextView textView;
@@ -22,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     CheckBox checkBox;
     ListView listView;
-    ArrayList<String> drinks=new ArrayList<>();
+    ArrayList<Order> orders=new ArrayList<>();
 //    String selectedSex="Male";
 //    String name="";
 //    String sex="";
@@ -78,7 +82,21 @@ public class MainActivity extends AppCompatActivity {
 
     void setupListView(){
 //        String[] data=new String[]{"1","2","3","4","5","6"};
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,drinks);
+//        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,drinks);
+//        List<Map<String,String>> data=new ArrayList<>();
+//        for(int i=0;i<orders.size();i++){
+//           Order order=orders.get(i);
+//            Map<String,String> item=new HashMap<>();
+//            //將order資料放入Map
+//            item.put("note",order.note);
+//            item.put("drinkName",order.drinkName);
+//            data.add(item);
+//        }
+//        String [] from={"note","drinkName"};
+//        int[] to={R.id.noteTextView,R.id.drinkNameTextView};
+//        SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.listview_order_item,from,to);
+
+        OrderAdapter adapter=new OrderAdapter(this,orders);
         listView.setAdapter(adapter);
     }
 
@@ -88,8 +106,11 @@ public class MainActivity extends AppCompatActivity {
 //        sex=selectedSex;
 //        changTextView();
 
-        drinks.add(drinkName);
-        textView.setText(drinkName);
+        Order order=new Order();
+        order.note=note;
+        order.drinkName=drinkName;
+        orders.add(order);
+        //textView.setText(order);
         editText.setText("");
         setupListView();
     }
