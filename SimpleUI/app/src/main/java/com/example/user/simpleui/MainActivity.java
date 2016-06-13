@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    static final int REQUEST_CODE_DRINK_MENU_ACTIVITY=0;
     TextView textView;
     EditText editText;
     RadioGroup radioGroup;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Log.d("Debug", "SimpleUI");
         textView= (TextView) findViewById(R.id.textView);
@@ -89,7 +92,24 @@ public class MainActivity extends AppCompatActivity {
     public void goToMenu(View view){
         Intent intent=new Intent();
         intent.setClass(this, DrinkMenuActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_DRINK_MENU_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE_DRINK_MENU_ACTIVITY){
+            if(resultCode==RESULT_OK){
+              textView.setText(data.getStringExtra("results"));
+                Toast.makeText(this,"完成訂購",Toast.LENGTH_LONG).show();
+            }
+            else{
+                if(requestCode==RESULT_CANCELED){
+                    Toast.makeText(this,"未完成訂購",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
     }
 
     @Override
