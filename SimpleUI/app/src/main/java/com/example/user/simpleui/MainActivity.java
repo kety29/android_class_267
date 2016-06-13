@@ -1,5 +1,6 @@
 package com.example.user.simpleui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        Log.d("Debug","Main Activity OnCreate");
     }
 
     void setupListView(){
@@ -81,5 +84,46 @@ public class MainActivity extends AppCompatActivity {
         //textView.setText(order);
         editText.setText("");
         setupListView();
+    }
+
+    public void goToMenu(View view){
+        Intent intent=new Intent();
+        intent.setClass(this, DrinkMenuActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.d("Debug", "Main Activity OnStart");
+    }
+
+    @Override
+     protected void onStop() {
+        super.onStop();
+        Log.d("Debug", "Main Activity OnStop");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Debug", "Main Activity onPause");
+    }
+
+    @Override
+     protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Debug", "Main Activity OnDestroy");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("Debug", "Main Activity onRestart");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Debug", "Main Activity onResume");
     }
 }
