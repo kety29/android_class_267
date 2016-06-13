@@ -30,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
     Spinner storeSpinner;
 
     ArrayList<Order> orders=new ArrayList<>();
-//    String selectedSex="Male";
-//    String name="";
-//    String sex="";
     String drinkName="black tea";
 
     @Override
@@ -60,45 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                if (checkedId == R.id.maleRadioButton) {
-//                    selectedSex = "Male";
-//                } else if (checkedId == R.id.femaleRadioButton) {
-//                    selectedSex = "Female";
-//                }
-                //依選擇顯示文字
-                RadioButton radioButton=(RadioButton)findViewById(checkedId);
-                drinkName=radioButton.getText().toString();
-            }
-        });
-
-//        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//             changTextView();
-//            }
-//        });
     }
 
     void setupListView(){
-//        String[] data=new String[]{"1","2","3","4","5","6"};
-//        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,drinks);
-//        List<Map<String,String>> data=new ArrayList<>();
-//        for(int i=0;i<orders.size();i++){
-//           Order order=orders.get(i);
-//            Map<String,String> item=new HashMap<>();
-//            //將order資料放入Map
-//            item.put("note",order.note);
-//            item.put("drinkName",order.drinkName);
-//            data.add(item);
-//        }
-//        String [] from={"note","drinkName"};
-//        int[] to={R.id.noteTextView,R.id.drinkNameTextView};
-//        SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.listview_order_item,from,to);
-
         OrderAdapter adapter=new OrderAdapter(this,orders);
         listView.setAdapter(adapter);
     }
@@ -112,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
     public void click(View view)
     {
         String note=editText.getText().toString();
-//        sex=selectedSex;
-//        changTextView();
-
         Order order=new Order();
         order.note=note;
         order.drinkName=drinkName;
@@ -124,17 +82,4 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
         setupListView();
     }
-
-//    public void changTextView(){
-//        if(name.equals(""))
-//            return;
-//        if(checkBox.isChecked()){
-//            textView.setText(name);
-//        }else{
-//            String content=name+" sex: "+sex;
-//            textView.setText(content);
-//        }
-//
-//    }
-
 }
