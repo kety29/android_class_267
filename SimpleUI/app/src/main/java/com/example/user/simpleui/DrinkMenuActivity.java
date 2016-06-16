@@ -1,5 +1,7 @@
 package com.example.user.simpleui;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class DrinkMenuActivity extends AppCompatActivity {
+public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDialog.OnFragmentInteractionListener{
     ListView drinkListView;
     TextView priceTextView;
 
@@ -41,15 +43,34 @@ public class DrinkMenuActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DrinkAdapter drinkAdapter=(DrinkAdapter)parent.getAdapter();
-                Drink drink=(Drink)drinkAdapter.getItem(position);
-                drinkOrders.add(drink);
-                updateTototalPrice();
+//                DrinkAdapter drinkAdapter=(DrinkAdapter)parent.getAdapter();
+//                Drink drink=(Drink)drinkAdapter.getItem(position);
+//                drinkOrders.add(drink);
+//                updateTototalPrice();
+                Drink drink=(Drink)parent.getAdapter().getItem(position);
+                ShowDetailDrinkMenu(drink);
+
             }
         });
 
 
         Log.d("Debug", "Drink Menu Activity onCreate");
+    }
+
+    private void ShowDetailDrinkMenu(Drink drink){
+        FragmentManager fragmentManager=getFragmentManager();
+        FragmentTransaction ft=fragmentManager.beginTransaction();
+        //DrinkOrderDialog orderDialog=DrinkOrderDialog.newInstance("", "");//new
+        DrinkOrder drinkOrder=new DrinkOrder();
+        drinkOrder.mPrice=drink.mPrice;
+        drinkOrder.lPrice=drink.lPrince;
+        drinkOrder.drinkName=drink.name;
+        DrinkOrderDialog orderDialog=DrinkOrderDialog.newInstance(drinkOrder);
+        orderDialog.show(ft,"DrinkOrderDialog");
+//        ft.replace(R.id.root,orderDialog);
+//        ft.addToBackStack(null);
+//        ft.commit();
+
     }
 
     private void updateTototalPrice(){
