@@ -3,14 +3,12 @@ package com.example.user.simpleui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 
@@ -26,7 +24,7 @@ public class DrinkOrderDialog extends DialogFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    //private static final String ARG_PARAM2 = "param2";
 
 
 
@@ -77,6 +75,7 @@ public class DrinkOrderDialog extends DialogFragment {
         }
         LayoutInflater layoutInflater=LayoutInflater.from(getActivity());
         View root=layoutInflater.inflate(R.layout.fragment_drink_order_dialog, null);
+        //Dialog
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         builder.setView(root)
                 .setTitle(drinkOrder.drinkName)

@@ -49,7 +49,7 @@
             android:text="black tea"
             android:id="@+id/blackteaRadioButton"
             android:checked="true"
-            android:drawableRight="@drawable/male" />
+            android:drawableRight="@drawable/drink1" />
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
             android:text="green tea"
             android:id="@+id/greenteaRadioButton"
             android:checked="false"
-            android:drawableRight="@drawable/female" />
+            android:drawableRight="@drawable/drink2" />
     </RadioGroup>
 
     <CheckBox

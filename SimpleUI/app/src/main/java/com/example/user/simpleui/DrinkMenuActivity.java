@@ -34,11 +34,11 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_menu);
-        setData();
+        setData();//將資料放入Array <drinks>
 
         drinkListView=(ListView)findViewById(R.id.drinkListView);
         priceTextView=(TextView)findViewById(R.id.priceTextView);
-        setupListView();
+        setupListView();//將drinks放入adapter
         drinkListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
