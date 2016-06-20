@@ -1,8 +1,12 @@
 package com.example.user.simpleui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
     //CheckBox checkBox;
     ListView listView;
     Spinner storeSpinner;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     ArrayList<Order> orders=new ArrayList<>();
     String drinkName="black tea";
+    String menuResults = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +47,21 @@ public class MainActivity extends AppCompatActivity {
         radioGroup=(RadioGroup) findViewById(R.id.radioGroup);
         listView=(ListView) findViewById(R.id.listView);
         storeSpinner=(Spinner) findViewById(R.id.spinner);
+        sharedPreferences=getSharedPreferences("setting", Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
 
+        setupOrdersData();
         setupListView();
         setupSpinner();
 
+        editText.setText(sharedPreferences.getString("editText", ""));
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String text = editText.getText().toString();
+                editor.putString("editText", text);
+                editor.apply();
+
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     click(v);
                     return true;
@@ -55,24 +70,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        storeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//
-//        });
-//        storeSpinner.setSelection();
+        textView.setText(sharedPreferences.getString("textView", ""));
+        textView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                editor.putString("textView", s.toString());
+                editor.apply();
+            }
+        });
 
         Log.d("Debug","Main Activity OnCreate");
     }
 
     void setupListView(){
+
         OrderAdapter adapter=new OrderAdapter(this,orders);
         listView.setAdapter(adapter);
     }
@@ -82,16 +103,27 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,data);
         storeSpinner.setAdapter(adapter);
     }
+    void setupOrdersData(){
+        String content=Utils.readFile(this,"history");
+        String[] datas = content.split("\n");
+        for(int i=0;i<datas.length;i++){
+            Order order=Order.newInstanceWithData(datas[i]);
+            if(order!=null){
+                orders.add(order);
+            }
+        }
+    }
 
     public void click(View view)
     {
         String note=editText.getText().toString();
         Order order=new Order();
         order.note=note;
-        order.drinkName=drinkName;
+        order.menuResults=menuResults;
         order.storeInfo=(String)storeSpinner.getSelectedItem();
         orders.add(order);
-        //textView.setText(order);
+        Utils.writeFile(this, "history", order.getJsonObject().toString());
+        textView.setText(note);
         editText.setText("");
         setupListView();
     }
@@ -107,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==REQUEST_CODE_DRINK_MENU_ACTIVITY){
             if(resultCode==RESULT_OK){
+                menuResults=data.getStringExtra("results");
               textView.setText(data.getStringExtra("results"));
                 Toast.makeText(this,"完成訂購",Toast.LENGTH_LONG).show();
             }

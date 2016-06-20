@@ -4,49 +4,50 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by user on 2016/6/16.
+
  */
 public class DrinkOrder {
-    String drinkName;
+
     String ice = "正常";
     String sugar = "正常";
     String note = "";
+    String drinkName="";
     int lNumber = 0;
-    int mNumber = 0;
+    int mNumber = 1;
     int lPrice;
     int mPrice;
 
-
-    public JSONObject getJsonObject(){
-        JSONObject jsonObject=new JSONObject();
+    public JSONObject getJsonObject()
+    {
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("drinkName", drinkName);
             jsonObject.put("ice", ice);
             jsonObject.put("sugar", sugar);
-            jsonObject.put("note", note);
             jsonObject.put("lNumber", lNumber);
             jsonObject.put("mNumber", mNumber);
             jsonObject.put("lPrice", lPrice);
             jsonObject.put("mPrice", mPrice);
-
+            jsonObject.put("drinkName",drinkName);
+            jsonObject.put("note", note);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
     }
 
-    public static DrinkOrder newInstanceWithJsonObject(String data){
+    public static DrinkOrder newInstanceWithJsonObject(String data)
+    {
         try {
-            JSONObject jsonObject=new JSONObject(data);
-            DrinkOrder drinkOrder=new DrinkOrder();
-            drinkOrder.drinkName=jsonObject.getString("drinkName");
-            drinkOrder.ice=jsonObject.getString("ice");
-            drinkOrder.sugar=jsonObject.getString("sugar");
-            drinkOrder.note=jsonObject.getString("note");
-            drinkOrder.lNumber=jsonObject.getInt("lNumber");
-            drinkOrder.mNumber=jsonObject.getInt("mNumber");
-            drinkOrder.lPrice=jsonObject.getInt("lPrice");
-            drinkOrder.mPrice=jsonObject.getInt("mPrice");
+            JSONObject jsonObject = new JSONObject(data);
+            DrinkOrder drinkOrder = new DrinkOrder();
+            drinkOrder.ice = jsonObject.getString("ice");
+            drinkOrder.drinkName = jsonObject.getString("drinkName");
+            drinkOrder.sugar = jsonObject.getString("sugar");
+            drinkOrder.note = jsonObject.getString("note");
+            drinkOrder.mPrice = jsonObject.getInt("mPrice");
+            drinkOrder.mNumber = jsonObject.getInt("mNumber");
+            drinkOrder.lPrice = jsonObject.getInt("lPrice");
+            drinkOrder.lNumber = jsonObject.getInt("lNumber");
             return drinkOrder;
         } catch (JSONException e) {
             e.printStackTrace();
