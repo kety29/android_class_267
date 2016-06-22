@@ -93,11 +93,11 @@ public Dialog onCreateDialog(Bundle savedInstanceState) {
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        drinkOrder.lNumber=lNumberPicker.getValue();
-                        drinkOrder.mNumber=mNumberPicker.getValue();
-                        drinkOrder.ice=getSelectedItemFromRadioGroup(iceRadioGroup);
-                        drinkOrder.sugar=getSelectedItemFromRadioGroup(sugarRadioGroup);
-                        //drinkOrder.note=noteEditText.getText().toString();
+                        drinkOrder.lNumber = lNumberPicker.getValue();
+                        drinkOrder.mNumber = mNumberPicker.getValue();
+                        drinkOrder.ice = getSelectedItemFromRadioGroup(iceRadioGroup);
+                        drinkOrder.sugar = getSelectedItemFromRadioGroup(sugarRadioGroup);
+                        drinkOrder.note = noteEditText.getText().toString();
                         if(mListener!=null){
                             mListener.OnDrinkOrderFinished(drinkOrder);
                         }
@@ -120,7 +120,7 @@ public Dialog onCreateDialog(Bundle savedInstanceState) {
         lNumberPicker.setValue(drinkOrder.lNumber);
         iceRadioGroup=(RadioGroup)root.findViewById(R.id.IceRadioGroup);
         sugarRadioGroup=(RadioGroup)root.findViewById(R.id.SugarRadioGroup);
-
+        noteEditText = (EditText)root.findViewById(R.id.noteEditText);
         return builder.create();
     }
 

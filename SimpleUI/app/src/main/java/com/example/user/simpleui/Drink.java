@@ -9,17 +9,20 @@ import org.json.JSONObject;
 public class Drink {
     String name;
     int mPrice;
-    int lPrince;
+    int lPrice;
     int imageId;
 
-    public JSONObject getData(){
-        JSONObject jsonObject=new JSONObject();
+    public JSONObject getData()
+    {
+        JSONObject jsonObject = new JSONObject();
+
         try {
-            jsonObject.put("name",name);
-            jsonObject.put("price",mPrice);
+            jsonObject.put("name", name);
+            jsonObject.put("price", mPrice);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return jsonObject;
     }
 }

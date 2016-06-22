@@ -17,8 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="60dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,10 +36,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0"
         android:id="@+id/priceTextView"
-        android:layout_alignTop="@+id/textView2"
+        android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/textView2"
         android:layout_toEndOf="@+id/textView2"
-        android:layout_alignParentLeft="false"
         android:layout_marginLeft="10dp" />
 
     <Button
@@ -47,20 +46,8 @@
         android:layout_height="wrap_content"
         android:text="OK"
         android:id="@+id/button3"
-        android:layout_marginLeft="92dp"
-        android:layout_marginStart="92dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/priceTextView"
-        android:layout_toEndOf="@+id/priceTextView"
+        android:layout_alignBottom="@+id/priceTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:onClick="done" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:id="@+id/button4"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/button3"
-        android:layout_toEndOf="@+id/button3"
-        android:onClick="cancel" />
 </RelativeLayout>

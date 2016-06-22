@@ -14,13 +14,15 @@ import java.util.List;
 /**
  * Created by user on 2016/6/13.
  */
-class DrinkAdapter extends BaseAdapter{
+public class DrinkAdapter extends BaseAdapter {
 
     LayoutInflater inflater;
     List<Drink> drinks;
-    public DrinkAdapter(Context context,ArrayList<Drink> drinks){
-        inflater=LayoutInflater.from(context);
-        this.drinks=drinks;
+
+    public DrinkAdapter(Context context, ArrayList<Drink> drinks)
+    {
+        this.inflater = LayoutInflater.from(context);
+        this.drinks = drinks;
     }
 
     @Override
@@ -41,27 +43,33 @@ class DrinkAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
-        if(convertView==null){
-            convertView=inflater.inflate(R.layout.listview_drink_item,null);
-            holder=new Holder();
-            holder.drinkNameTextView=(TextView)convertView.findViewById(R.id.storeInfoTextView);
-            holder.mPriceTextView=(TextView)convertView.findViewById(R.id.mPriceTextView);
-            holder.lPriceTextView=(TextView)convertView.findViewById(R.id.lPriceTextView);
-            holder.drinkImageView=(ImageView)convertView.findViewById(R.id.drinkImageView);
+        if(convertView == null)
+        {
+            convertView = inflater.inflate(R.layout.listview_drink_item, null);
+            holder = new Holder();
+            holder.drinkNameTextView = (TextView)convertView.findViewById(R.id.noteTextView);
+            holder.mPriceTextView = (TextView)convertView.findViewById(R.id.mPriceTextView);
+            holder.lPriceTextView = (TextView)convertView.findViewById(R.id.lPriceTextView);
+            holder.drinkImageView = (ImageView)convertView.findViewById(R.id.drinkImageView);
+
             convertView.setTag(holder);
-        }else {
-         holder=(Holder)convertView.getTag();
+        }
+        else
+        {
+            holder = (Holder)convertView.getTag();
         }
 
-        Drink drink =drinks.get(position);
+        Drink drink = drinks.get(position);
+
         holder.drinkNameTextView.setText(drink.name);
         holder.mPriceTextView.setText(String.valueOf(drink.mPrice));
-        holder.lPriceTextView.setText(String.valueOf(drink.lPrince));
+        holder.lPriceTextView.setText(String.valueOf(drink.lPrice));
         holder.drinkImageView.setImageResource(drink.imageId);
         return convertView;
     }
 
-    class Holder{
+    class Holder
+    {
         TextView drinkNameTextView;
         TextView mPriceTextView;
         TextView lPriceTextView;

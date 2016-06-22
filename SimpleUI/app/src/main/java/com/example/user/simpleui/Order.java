@@ -11,24 +11,26 @@ public class Order {
     String menuResults;
     String storeInfo;
 
-    public JSONObject getJsonObject(){
-        JSONObject jsonObject=new JSONObject();
+    public JSONObject getJsonObject()
+    {
+        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("note",note);
-            jsonObject.put("menuResults",menuResults);
+            jsonObject.put("note", note);
+            jsonObject.put("menuResults", menuResults);
             jsonObject.put("storeInfo",storeInfo);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
     }
-    public static Order newInstanceWithData(String data){
-        JSONObject jsonObject=new JSONObject();
-        Order order=new Order();
+
+    public static Order newInstanceWithData(String data) {
         try {
-            order.note=jsonObject.getString("note");
-            order.menuResults=jsonObject.getString("menuResults");
-            order.storeInfo=jsonObject.getString("storeInfo");
+            JSONObject jsonObject = new JSONObject(data);
+            Order order = new Order();
+            order.note = jsonObject.getString("note");
+            order.storeInfo = jsonObject.getString("storeInfo");
+            order.menuResults = jsonObject.getString("menuResults");
             return order;
         } catch (JSONException e) {
             e.printStackTrace();

@@ -4,14 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
-
+ * Created by user on 6/16/16.
  */
 public class DrinkOrder {
 
     String ice = "正常";
     String sugar = "正常";
     String note = "";
-    String drinkName="";
+    String drinkName;
     int lNumber = 0;
     int mNumber = 1;
     int lPrice;

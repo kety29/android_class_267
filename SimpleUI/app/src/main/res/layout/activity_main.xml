@@ -13,17 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Android Studio"
-        android:id="@+id/textView" />
+        android:id="@+id/textView"
+        android:enabled="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CLICK"
+        android:text="Click"
         android:id="@+id/button"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:onClick="click"
-        android:textSize="20dp"
         android:layout_below="@+id/checkBox" />
 
     <EditText
@@ -47,17 +46,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="black tea"
-            android:id="@+id/blackteaRadioButton"
-            android:checked="true"
-            android:drawableRight="@drawable/drink1" />
+            android:id="@+id/blackTeaRadioButton"
+            android:checked="true" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="green tea"
-            android:id="@+id/greenteaRadioButton"
-            android:checked="false"
-            android:drawableRight="@drawable/drink2" />
+            android:text="red tea"
+            android:id="@+id/redTeaRadioButton"
+            android:checked="false" />
     </RadioGroup>
 
     <CheckBox
@@ -95,6 +92,6 @@
         android:layout_above="@+id/listView"
         android:layout_toRightOf="@+id/button"
         android:layout_toEndOf="@+id/button"
-        android:onClick="goToMenu"
-        android:textSize="20dp" />
+        android:onClick="goToMenu" />
+
 </RelativeLayout>
