@@ -3,6 +3,9 @@ package com.example.user.simpleui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -20,7 +23,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     Spinner storeSpinner;
 
-    ArrayList<Order> orders = new ArrayList<>();
+    List<Order> orders = new ArrayList<>();
     String drinkName = "black tea";
     String menuResults = "";
 
@@ -42,6 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //use ParseService
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+        //load ParseData
+        ParseQuery<ParseObject> query=new ParseQuery("TestObject");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e==null){
+                    for(ParseObject object:objects){
+                        Toast.makeText(MainActivity.this,object.getString("foo"),Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+        });
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -123,14 +150,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupOrdersData()
     {
-        String content = Utils.readFile(this, "history");
-        String[] datas = content.split("\n");
-        for(int i = 0 ; i < datas.length; i++) {
-            Order order = Order.newInstanceWithData(datas[i]);
-            if(order != null)
-            {
-                orders.add(order);
+//        String content = Utils.readFile(this, "history");
+//        String[] datas = content.split("\n");
+//        for(int i = 0 ; i < datas.length; i++) {
+//            Order order = Order.newInstanceWithData(datas[i]);
+//            if(order != null)
+//            {
+//                orders.add(order);
+//            }
+//        }
+        ConnectivityManager cm=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info=cm.getActiveNetworkInfo();
+        final FindCallback<Order> callback=new FindCallback<Order>() {
+            @Override
+            public void done(List<Order> objects, ParseException e) {
+                if (e == null){
+                    orders = objects;
+                setupListView();
+                }
             }
+        };
+        if(info!=null && info.isConnected()) {
+            Order.getOrdersFromRemote(new FindCallback<Order>() {
+                @Override
+                public void done(List<Order> objects, ParseException e) {
+                    if(e!=null){
+                        Toast.makeText(MainActivity.this,"Sync Failed",Toast.LENGTH_LONG).show();
+                        Order.getQuery().fromLocalDatastore().findInBackground(callback);
+                    }else{
+                        callback.done(objects,e);
+                    }
+                }
+            });
+        }else{
+            Order.getQuery().fromLocalDatastore().findInBackground(callback);
         }
     }
 
@@ -150,9 +203,11 @@ public class MainActivity extends AppCompatActivity {
     {
         String note = editText.getText().toString();
         Order order = new Order();
-        order.note = note;
-        order.menuResults = menuResults;
-        order.storeInfo = (String)storeSpinner.getSelectedItem();
+        order.setNote(note);
+        order.setmenuResults(menuResults);
+        order.setstoreInfo((String) storeSpinner.getSelectedItem());
+        order.pinInBackground();
+        order.saveEventually();
         orders.add(order);
 
         Utils.writeFile(this, "history", order.getJsonObject().toString());
