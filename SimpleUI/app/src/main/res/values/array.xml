@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="storeInfo">
-        <item>台大店</item>
-        <item>永大店</item>
-        <item>輔大店</item>
-        <item>公館店</item>
-        <item>西門店</item>
-        <item>中山店</item>
+        <item>台大店,台北市大安區</item>
+        <item>永大店,台北市永大區</item>
+        <item>輔大店,台北市輔大區</item>
+        <item>公館店,台北市公館區</item>
+        <item>西門店,台北市西門區</item>
+        <item>中山店,台北市中山區</item>
     </string-array>
 
 </resources>

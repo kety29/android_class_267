@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,9 +15,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +31,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,25 +55,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //use ParseService
+        super.onCreate(savedInstanceState);
+
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
         testObject.saveInBackground();
-        //load ParseData
-        ParseQuery<ParseObject> query=new ParseQuery("TestObject");
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("TestObject");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if(e==null){
-                    for(ParseObject object:objects){
-                        Toast.makeText(MainActivity.this,object.getString("foo"),Toast.LENGTH_LONG).show();
+                if(e == null)
+                {
+                    for (ParseObject object : objects)
+                    {
+                        Toast.makeText(MainActivity.this, object.getString("foo"), Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
         });
-
-        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         textView = (TextView) findViewById(R.id.textView);
@@ -122,23 +126,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                editor.putString("spinner",String.valueOf(position));
-                editor.apply();
-                Log.d("Debug", "position:"+position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Order order = (Order)parent.getAdapter().getItem(position);
+                goToDetailOrder(order);
             }
         });
-
-
         Log.d("Debug", "Main Activity OnCreate");
+    }
+
+    private void goToDetailOrder(Order order) {
+        Intent intent = new Intent();
+
+        intent.setClass(this,OrdderDetailActivity.class);
+
+        intent.putExtra("note", order.getNote());
+        intent.putExtra("menuResults", order.getmenuResults());
+        intent.putExtra("storeInfo", order.getstoreInfo());
+
+        startActivity(intent);
     }
 
     void setupListView()
@@ -148,41 +155,47 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    private void setupOrdersData()
-    {
+    private void setupOrdersData() {
 //        String content = Utils.readFile(this, "history");
 //        String[] datas = content.split("\n");
-//        for(int i = 0 ; i < datas.length; i++) {
+//        for(int i = 0 ; i < datas.length ; i++)
+//        {
 //            Order order = Order.newInstanceWithData(datas[i]);
 //            if(order != null)
 //            {
 //                orders.add(order);
 //            }
 //        }
-        ConnectivityManager cm=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info=cm.getActiveNetworkInfo();
-        final FindCallback<Order> callback=new FindCallback<Order>() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+
+        final FindCallback<Order> callback = new FindCallback<Order>() {
             @Override
             public void done(List<Order> objects, ParseException e) {
-                if (e == null){
+                if(e == null) {
                     orders = objects;
-                setupListView();
+                    setupListView();
                 }
             }
         };
-        if(info!=null && info.isConnected()) {
+
+
+        if (info != null && info.isConnected()) {
             Order.getOrdersFromRemote(new FindCallback<Order>() {
                 @Override
                 public void done(List<Order> objects, ParseException e) {
-                    if(e!=null){
-                        Toast.makeText(MainActivity.this,"Sync Failed",Toast.LENGTH_LONG).show();
+                    if(e!=null)
+                    {
+                        Toast.makeText(MainActivity.this, "Sync Failed", Toast.LENGTH_LONG).show();
                         Order.getQuery().fromLocalDatastore().findInBackground(callback);
-                    }else{
-                        callback.done(objects,e);
+                    }
+                    else
+                    {
+                        callback.done(objects, e);
                     }
                 }
             });
-        }else{
+        } else{
             Order.getQuery().fromLocalDatastore().findInBackground(callback);
         }
     }
@@ -191,12 +204,7 @@ public class MainActivity extends AppCompatActivity {
     {
         String[] data = getResources().getStringArray(R.array.storeInfo);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
-        int index=Integer.parseInt(sharedPreferences.getString("spinner", "0"));
-        Log.d("Debug", "index:"+index);
         storeSpinner.setAdapter(adapter);
-        storeSpinner.setSelection(index);
-
-
     }
 
     public void click(View view)
