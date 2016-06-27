@@ -41,7 +41,8 @@ public class Order extends ParseObject{
     public static ParseQuery<Order> getQuery(){return ParseQuery.getQuery(Order.class);}
 
     public static void getOrdersFromRemote(final FindCallback<Order> callback){
-        getQuery().findInBackground(new FindCallback<Order>() {
+        getQuery().orderByDescending("createdAt")
+                .findInBackground(new FindCallback<Order>() {
             @Override
             public void done(List<Order> objects, ParseException e) {
                 if(e==null){
